@@ -52,6 +52,69 @@ def bisection(f,a,b,TOL = 1.0e-9, eType = 0, pType = False):
             b = p
         p_n = p
 
+def newRaph(f, df, p, TOL = 1.0e-9, N_0 = 30):
+    #Passo 1
+    for i in range(N_0):
+        #Passo 2
+        fp = f(p)
+        dfp = df(p)
+        try:
+            dp = -fp/dfp
+        except ZeroDivisionError: 
+            print("df(p) = 0")
+            return none
+        
+        #Passo 3
+        p = p + dp
+        #Passo 4
+        if abs(dp) < TOL:
+            return p
+    
+    #Passo 5
+    print("O método falhou após %d iterações" % (N_0))
+    return none
+    
+def newRaphBi(f, df, a, b, TOL = 1.0e-9):
+    #Passo 1
+    N_0 = int(mt.ceil(mt.log(abs(b - a)/TOL)/mt.log(2.0)))
+    #Passo 2
+    fa = f(a)
+    if fa == 0.0:
+        return a
+    fb = f(b)
+    if fb == 0.0:
+        return b
+    if np.sign(fa) == np.sign(fb):
+        print("O intervalo pode não conter raizes")
+        return None
+    #passo 3
+    p = a + (b - a)/2
+    #passo 4
+    for i in range(N_0):
+        #Passo 5
+        fp = f(p)
+        dfp = df(p)
+        try:
+            dp = -fp/dfp
+        except ZeroDivisionError:
+            if np.sign(fa) == np.sign(fp) :
+                a = p
+                fa = fp
+            else:
+                b = p
+                fb = fp
+            dp = (b-a)/2
+        #Passo 3
+        p = p + dp
+        #Passo 4
+        if abs(dp) < TOL:
+            return p
+    
+    #Passo 5
+    print("O método falhou após %d iterações" % (N_0))
+    return none
+
+
 def rootsearch(f,a,b,dx,pType = False):
     ''' x1,x2 = rootsearch(f,a,b,dx,pType = False).
     Procura no intervalo (a,b), com incrementos dx, por
@@ -85,7 +148,7 @@ def rootsearch(f,a,b,dx,pType = False):
 def polinomio(coef, x):
     ''' y = polinomio(coef,x)
     Retorna o polinomio p(x)=(x+x_0)(x+x_1)...(x+x_{N-1})
-    onde x_i para i = 0...N-1 são os elementos da lista
+    onde x_i, para i = 0...N-1, são os elementos da lista
     coef de tamanho N. Tratase de um polinômio de grau N
     '''
     N = len(coef)
@@ -94,5 +157,4 @@ def polinomio(coef, x):
         out = out * (x + coef[N-1])
         N = N - 1
     return out
-
 
