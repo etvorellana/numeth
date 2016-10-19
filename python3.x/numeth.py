@@ -109,10 +109,11 @@ def newRaphBi(f, df, a, b, TOL = 1.0e-9):
         #Passo 4
         if abs(dp) < TOL:
             return p
-    
+    #https://github.com/etvorellana/numeth
     #Passo 5
     print("O método falhou após %d iterações" % (N_0))
     return none
+
 
 
 def rootsearch(f,a,b,dx,pType = False):
